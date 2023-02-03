@@ -35,9 +35,10 @@ func GetMultiFiles(dir, pattern string) []File {
 			for _, ex := range exts {
 				if strings.Contains(ext, ex) {
 					//aim = append(aim, file.Name())
+					mate, _ := os.Stat(strings.Join([]string{dir, file.Name()}, string(os.PathSeparator)))
 					f := &File{
 						FullPath: strings.Join([]string{dir, file.Name()}, string(os.PathSeparator)),
-						Size:     0,
+						Size:     mate.Size(),
 						FullName: file.Name(),
 						ExtName:  ext,
 					}
@@ -55,9 +56,10 @@ func GetMultiFiles(dir, pattern string) []File {
 			//log.Info.Printf("extname is %v\n", ext)
 			if strings.Contains(ext, pattern) {
 				//aim = append(aim, file.Name())
+				mate, _ := os.Stat(strings.Join([]string{dir, file.Name()}, string(os.PathSeparator)))
 				f := &File{
 					FullPath: strings.Join([]string{dir, file.Name()}, string(os.PathSeparator)),
-					Size:     0,
+					Size:     mate.Size(),
 					FullName: file.Name(),
 					ExtName:  ext,
 				}
