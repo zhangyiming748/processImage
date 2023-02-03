@@ -1,5 +1,5 @@
-github.com/zhangyiming748/GetFileInfo v0.0.0-20230203030428-5fc8701c6d46 h1:MF/Q3ghH3t0/2g6ECd25aOTMDZYtAyf/IOypogVS60w=
-github.com/zhangyiming748/GetFileInfo v0.0.0-20230203030428-5fc8701c6d46/go.mod h1:FHAHhkZ6Y8qMUIziCg5DgZH/rZ8U9k+199IoVjhC9ug=
+github.com/zhangyiming748/GetFileInfo v0.0.2 h1:M0CdO3I+v9Bk6YeVdex+OQQXzmp47jbrTJAj2AvNeTw=
+github.com/zhangyiming748/GetFileInfo v0.0.2/go.mod h1:FHAHhkZ6Y8qMUIziCg5DgZH/rZ8U9k+199IoVjhC9ug=
 github.com/zhangyiming748/log v0.0.3 h1:SL2zmxLElyuT4AyVegxm2hEPT1ZAw6V0J5kRIUjKEss=
 github.com/zhangyiming748/log v0.0.3/go.mod h1:0AuXMXYc1C1Q1nH2H4vipsrOTfANNf4oaZtDcT2GKk4=
 github.com/zhangyiming748/replace v0.0.4 h1:MttKBU+2pFNofExc1oUY0vaEsRV0lGiAyPSdyIn7/Co=
