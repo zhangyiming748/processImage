@@ -57,7 +57,6 @@ func ProcessImages(dir, pattern, threads string) {
 	log.Debug.Printf("整个任务用时 %v 分\n", during)
 }
 func ProcessAllImages(root, pattern, threads string) {
-	ProcessImages(Folder, pattern, threads)
 	ProcessImages(root, pattern, threads)
 	Folders := GetAllFolder.ListFolders(root)
 	for _, Folder := range Folders {

@@ -3,8 +3,8 @@ package processImage
 import "testing"
 
 func TestProcessImages(t *testing.T) {
-	dir := "/Users/zen/Downloads/Telegram Desktop/OverWatch"
+	dir := "/Volumes/T7/slacking/Telegram/nier"
 	pattern := "jpg;png"
-	threads := "4"
-	ProcessImages(dir, pattern, threads)
+	threads := "10"
+	ProcessAllImages(dir, pattern, threads)
 }
