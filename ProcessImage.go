@@ -1,6 +1,7 @@
 package processImage
 
 import (
+	"github.com/zhangyiming748/GetAllFolder"
 	"github.com/zhangyiming748/GetFileInfo"
 	"github.com/zhangyiming748/log"
 	"github.com/zhangyiming748/processImage/util"
@@ -39,10 +40,10 @@ func ProcessImages(dir, pattern, threads string) {
 	files := GetFileInfo.GetAllFileInfo(dir, pattern)
 	for _, file := range files {
 		log.Debug.Printf("文件%s压缩前大小%fMB\n", file.FullName, float64(file.Size)/MegaByte)
-		if file.Size < Limit {
-			log.Debug.Printf("文件%v很小(%f),跳过压缩\n", file.FullPath, float64(file.Size))
-			continue
-		}
+		//if file.Size < Limit {
+		//	log.Debug.Printf("文件%v很小(%f),跳过压缩\n", file.FullPath, float64(file.Size))
+		//	continue
+		//}
 		out, _ := os.Stat(util.Static(file, threads))
 		resize := out.Size()
 		log.Debug.Printf("文件%s压缩后大小%fMB\n", file.FullName, float64(resize)/MegaByte)
@@ -56,7 +57,12 @@ func ProcessImages(dir, pattern, threads string) {
 	log.Debug.Printf("整个任务用时 %v 分\n", during)
 }
 func ProcessAllImages(root, pattern, threads string) {
-
+	ProcessImages(Folder, pattern, threads)
+	ProcessImages(root, pattern, threads)
+	Folders := GetAllFolder.ListFolders(root)
+	for _, Folder := range Folders {
+		ProcessImages(Folder, pattern, threads)
+	}
 }
 func ProcessImagesLikeGif(dir, pattern, threads string) {
 	defer func() {
