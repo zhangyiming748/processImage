@@ -1,10 +1,16 @@
 package processImage
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestProcessImages(t *testing.T) {
-	dir := "/Volumes/T7/slacking/Telegram/nier"
+	dir := "/Users/zen/Downloads/Affect3d/futa"
 	pattern := "jpg;png"
-	threads := "10"
+	threads := "2"
 	ProcessAllImages(dir, pattern, threads)
+}
+
+func TestDeleteUnfinishedFile(t *testing.T) {
+	DeleteUnfinishedFile()
 }

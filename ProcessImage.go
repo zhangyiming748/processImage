@@ -1,12 +1,14 @@
 package processImage
 
 import (
+	"bufio"
 	"github.com/zhangyiming748/GetAllFolder"
 	"github.com/zhangyiming748/GetFileInfo"
 	"github.com/zhangyiming748/log"
 	"github.com/zhangyiming748/processImage/util"
 	"github.com/zhangyiming748/voiceAlert"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -29,8 +31,10 @@ const (
 )
 
 func ProcessImages(dir, pattern, threads string) {
+	// GracefullyExit.ExitAfterRun(DeleteUnfinishedFile)
 	defer func() {
 		if err := recover(); err != nil {
+			DeleteUnfinishedFile()
 			voiceAlert.Voice(voiceAlert.FAILED)
 		}
 	}()
@@ -64,6 +68,7 @@ func ProcessAllImages(root, pattern, threads string) {
 	}
 }
 func ProcessImagesLikeGif(dir, pattern, threads string) {
+
 	defer func() {
 		if err := recover(); err != nil {
 			voiceAlert.Voice(voiceAlert.FAILED)
@@ -83,4 +88,29 @@ func ProcessImagesLikeGif(dir, pattern, threads string) {
 	during := m_end.Sub(m_start).Minutes()
 	voiceAlert.Voice(voiceAlert.COMPLETE)
 	log.Debug.Printf("整个任务用时 %v 分\n", during)
+}
+func DeleteUnfinishedFile() {
+	defer func() {
+		if err := recover(); err != nil {
+			log.Warn.Println("文件已经删除过了")
+		}
+	}()
+	f := readLastLine()
+	log.Debug.Println("即将删除的文件", f)
+	os.RemoveAll(f)
+}
+
+func readLastLine() (info string) {
+	file, err := os.Open("program.log")
+	if err != nil {
+		log.Warn.Fatal(err)
+	}
+	defer file.Close()
+	var lineText string
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		lineText = scanner.Text()
+		//fmt.Print(lineText)
+	}
+	return strings.Split(string(lineText), "threads 2")[2]
 }

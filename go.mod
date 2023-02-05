@@ -10,3 +10,5 @@ require (
 )
 
 require github.com/zhangyiming748/GetAllFolder v0.0.2
+
+require github.com/zhangyiming748/GracefullyExit v0.0.3
