@@ -34,7 +34,7 @@ func ProcessImages(dir, pattern, threads string) {
 	// GracefullyExit.ExitAfterRun(DeleteUnfinishedFile)
 	defer func() {
 		if err := recover(); err != nil {
-			DeleteUnfinishedFile()
+			// DeleteUnfinishedFile()
 			voiceAlert.Voice(voiceAlert.FAILED)
 		}
 	}()
