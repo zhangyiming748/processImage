@@ -31,11 +31,10 @@ const (
 )
 
 func ProcessImages(dir, pattern, threads string) {
-	// GracefullyExit.ExitAfterRun(DeleteUnfinishedFile)
 	defer func() {
 		if err := recover(); err != nil {
 			// DeleteUnfinishedFile()
-			voiceAlert.Voice(voiceAlert.FAILED)
+			voiceAlert.CustomizedOnMac(voiceAlert.Shanshan, "文件转换失败")
 		}
 	}()
 	m_start := time.Now()
@@ -51,13 +50,13 @@ func ProcessImages(dir, pattern, threads string) {
 		out, _ := os.Stat(util.Static(file, threads))
 		resize := out.Size()
 		log.Debug.Printf("文件%s压缩后大小%fMB\n", file.FullName, float64(resize)/MegaByte)
-		voiceAlert.Voice(voiceAlert.SUCCESS)
+		voiceAlert.CustomizedOnMac(voiceAlert.Shanshan, "单个文件转换完成")
 	}
 	m_end := time.Now()
 	end := time.Now().Format("整个任务结束时间 15:04:03")
 	log.Debug.Println(end)
 	during := m_end.Sub(m_start).Minutes()
-	voiceAlert.Voice(voiceAlert.COMPLETE)
+	voiceAlert.CustomizedOnMac(voiceAlert.Shanshan, "单个目录下文件全部转换完成")
 	log.Debug.Printf("整个任务用时 %v 分\n", during)
 }
 func ProcessAllImages(root, pattern, threads string) {
@@ -68,7 +67,6 @@ func ProcessAllImages(root, pattern, threads string) {
 	}
 }
 func ProcessImagesLikeGif(dir, pattern, threads string) {
-
 	defer func() {
 		if err := recover(); err != nil {
 			voiceAlert.Voice(voiceAlert.FAILED)
