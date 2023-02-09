@@ -5,9 +5,9 @@ import (
 )
 
 func TestProcessImages(t *testing.T) {
-	dir := "/Users/zen/Downloads/Affect3d/futa"
+	dir := "/Volumes/T7/slacking/Telegram/latex"
 	pattern := "jpg;png"
-	threads := "2"
+	threads := "10"
 	ProcessAllImages(dir, pattern, threads)
 }
 
