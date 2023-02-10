@@ -10,11 +10,17 @@ import (
 )
 
 /*
-返回输出文件全路径
-*/
+ */
 func Static(in GetFileInfo.Info, threads string) string {
 	prefix := strings.Trim(in.FullPath, in.ExtName)
 	out := strings.Join([]string{prefix, "avif"}, ".")
+	// Todo 如果转换出现错误 记录最后一个出问题的文件
+	defer func() {
+		if err := recover(); err != nil {
+			log.Debug.Printf("最后出问题的源文件%v\t目标文件%v\n", in.FullPath, out)
+			log.Debug.Printf("删除命令: rm \"out\"")
+		}
+	}()
 	cmd := exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-c:v", "libaom-av1", "-still-picture", "1", "-threads", threads, out)
 	log.Debug.Printf("生成的命令是:%s\n", cmd)
 	stdout, err := cmd.StdoutPipe()
@@ -45,10 +51,21 @@ func Static(in GetFileInfo.Info, threads string) string {
 	}
 	return out
 }
+
+/*
+返回输出文件全路径
+*/
 func Dynamic(in GetFileInfo.Info, threads string) {
 	prefix := strings.Trim(in.FullPath, in.ExtName)
 	out := strings.Join([]string{prefix, "avif"}, ".")
 	cmd := exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-threads", threads, out)
+	// Todo 如果转换出现错误 记录最后一个出问题的文件
+	defer func() {
+		if err := recover(); err != nil {
+			log.Debug.Printf("最后出问题的源文件%v\t目标文件%v\n", in.FullPath, out)
+			log.Debug.Printf("删除命令: rm \"out\"")
+		}
+	}()
 	log.Debug.Printf("生成的命令是:%s\n", cmd)
 	stdout, err := cmd.StdoutPipe()
 	cmd.Stderr = cmd.Stdout
