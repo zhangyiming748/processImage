@@ -46,7 +46,6 @@ func Static(in GetFileInfo.Info, threads string) string {
 	return out
 }
 func Dynamic(in GetFileInfo.Info, threads string) {
-	// TODO ffmpeg -i video.mp4 animated.avif
 	prefix := strings.Trim(in.FullPath, in.ExtName)
 	out := strings.Join([]string{prefix, "avif"}, ".")
 	cmd := exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-threads", threads, out)

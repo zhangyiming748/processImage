@@ -7,7 +7,6 @@ import (
 	"github.com/zhangyiming748/processImage/util"
 	"github.com/zhangyiming748/voiceAlert"
 	"os"
-	"time"
 )
 
 const (
@@ -31,13 +30,9 @@ const (
 func ProcessImages(dir, pattern, threads string) {
 	defer func() {
 		if err := recover(); err != nil {
-			// DeleteUnfinishedFile()
 			voiceAlert.CustomizedOnMac(voiceAlert.Shanshan, "文件转换失败")
 		}
 	}()
-	m_start := time.Now()
-	start := time.Now().Format("整个任务开始时间 15:04:03")
-	log.Debug.Println(start)
 	files := GetFileInfo.GetAllFileInfo(dir, pattern)
 	for index, file := range files {
 		log.Debug.Printf("正在处理第 %d/%d 个文件\n", index+1, len(files))
@@ -51,12 +46,7 @@ func ProcessImages(dir, pattern, threads string) {
 		log.Debug.Printf("文件%s压缩后大小%fMB\n", file.FullName, float64(resize)/MegaByte)
 		voiceAlert.CustomizedOnMac(voiceAlert.Shanshan, "单个文件转换完成")
 	}
-	m_end := time.Now()
-	end := time.Now().Format("整个任务结束时间 15:04:03")
-	log.Debug.Println(end)
-	during := m_end.Sub(m_start).Minutes()
 	voiceAlert.CustomizedOnMac(voiceAlert.Shanshan, "单个目录下文件全部转换完成")
-	log.Debug.Printf("整个任务用时 %v 分\n", during)
 }
 func ProcessAllImages(root, pattern, threads string) {
 	ProcessImages(root, pattern, threads)
@@ -72,18 +62,10 @@ func ProcessImagesLikeGif(dir, pattern, threads string) {
 			voiceAlert.CustomizedOnMac(voiceAlert.Shanshan, "文件转换失败")
 		}
 	}()
-	m_start := time.Now()
-	start := time.Now().Format("整个任务开始时间 15:04:03")
-	log.Debug.Println(start)
 	files := GetFileInfo.GetAllFileInfo(dir, pattern)
 	for _, file := range files {
 		util.Dynamic(file, threads)
 		voiceAlert.CustomizedOnMac(voiceAlert.Shanshan, "单个文件转换完成")
 	}
-	m_end := time.Now()
-	end := time.Now().Format("整个任务结束时间 15:04:03")
-	log.Debug.Println(end)
-	during := m_end.Sub(m_start).Minutes()
 	voiceAlert.CustomizedOnMac(voiceAlert.Shanshan, "单个目录下文件全部转换完成")
-	log.Debug.Printf("整个任务用时 %v 分\n", during)
 }
