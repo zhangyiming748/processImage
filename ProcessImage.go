@@ -41,7 +41,8 @@ func ProcessImages(dir, pattern, threads string) {
 	start := time.Now().Format("整个任务开始时间 15:04:03")
 	log.Debug.Println(start)
 	files := GetFileInfo.GetAllFileInfo(dir, pattern)
-	for _, file := range files {
+	for index, file := range files {
+		log.Debug.Printf("正在处理第 %d/%d 个文件\n", index+1, len(files))
 		log.Debug.Printf("文件%s压缩前大小%fMB\n", file.FullName, float64(file.Size)/MegaByte)
 		//if file.Size < Limit {
 		//	log.Debug.Printf("文件%v很小(%f),跳过压缩\n", file.FullPath, float64(file.Size))
@@ -62,7 +63,8 @@ func ProcessImages(dir, pattern, threads string) {
 func ProcessAllImages(root, pattern, threads string) {
 	ProcessImages(root, pattern, threads)
 	Folders := GetAllFolder.ListFolders(root)
-	for _, Folder := range Folders {
+	for index, Folder := range Folders {
+		log.Debug.Printf("正在处理第 %d/%d 个文件夹\n", index+1, len(Folders))
 		ProcessImages(Folder, pattern, threads)
 	}
 }
