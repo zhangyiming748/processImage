@@ -18,7 +18,7 @@ func Static(in GetFileInfo.Info, threads string) string {
 	defer func() {
 		if err := recover(); err != nil {
 			log.Debug.Printf("最后出问题的源文件%v\t目标文件%v\n", in.FullPath, out)
-			log.Debug.Printf("删除命令: rm \"out\"")
+			log.Debug.Printf("删除命令: rm \"%v\"", out)
 		}
 	}()
 	cmd := exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-c:v", "libaom-av1", "-still-picture", "1", "-threads", threads, out)
