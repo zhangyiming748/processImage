@@ -35,7 +35,8 @@ func ProcessImages(dir, pattern, threads string) {
 	}()
 	files := GetFileInfo.GetAllFileInfo(dir, pattern)
 	if len(files) == 0 {
-		voiceAlert.CustomizedOnMac(voiceAlert.Victoria, "跳过空文件夹")
+		voiceAlert.CustomizedOnMac(voiceAlert.Victoria, "skip!")
+		return
 	}
 	for index, file := range files {
 		log.Debug.Printf("正在处理第 %d/%d 个文件\n", index+1, len(files))
@@ -51,6 +52,7 @@ func ProcessImages(dir, pattern, threads string) {
 	}
 	voiceAlert.CustomizedOnMac(voiceAlert.Shanshan, "单个目录下文件全部转换完成")
 }
+
 func ProcessAllImages(root, pattern, threads string) {
 	ProcessImages(root, pattern, threads)
 	Folders := GetAllFolder.ListFolders(root)
@@ -59,6 +61,7 @@ func ProcessAllImages(root, pattern, threads string) {
 		ProcessImages(Folder, pattern, threads)
 	}
 }
+
 func ProcessImagesLikeGif(dir, pattern, threads string) {
 	defer func() {
 		if err := recover(); err != nil {
