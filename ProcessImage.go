@@ -34,6 +34,9 @@ func ProcessImages(dir, pattern, threads string) {
 		}
 	}()
 	files := GetFileInfo.GetAllFileInfo(dir, pattern)
+	if len(files) == 0 {
+		voiceAlert.CustomizedOnMac(voiceAlert.Victoria, "跳过空文件夹")
+	}
 	for index, file := range files {
 		log.Debug.Printf("正在处理第 %d/%d 个文件\n", index+1, len(files))
 		log.Debug.Printf("文件%s压缩前大小%fMB\n", file.FullName, float64(file.Size)/MegaByte)
