@@ -36,7 +36,7 @@ func Static(in GetFileInfo.Info, threads string) string {
 		_, err := stdout.Read(tmp)
 		t := string(tmp)
 		t = replace.Replace(t)
-		log.Info.Printf("%v\b", t)
+		log.TTY.Printf("%v\b", t)
 		if err != nil {
 			break
 		}
@@ -80,7 +80,7 @@ func Dynamic(in GetFileInfo.Info, threads string) {
 		_, err := stdout.Read(tmp)
 		t := string(tmp)
 		t = replace.Replace(t)
-		log.Info.Printf("%v\b", t)
+		log.TTY.Printf("%v\b", t)
 		if err != nil {
 			break
 		}
