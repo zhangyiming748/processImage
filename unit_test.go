@@ -5,7 +5,7 @@ import (
 )
 
 func TestProcessImages(t *testing.T) {
-	dir := "/Volumes/T7/slacking/Telegram"
+	dir := "/Users/zen/Pictures/emoji"
 	pattern := "jpg;JPG;png;PNG"
 	threads := "10"
 	ProcessAllImages(dir, pattern, threads)
