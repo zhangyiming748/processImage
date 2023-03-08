@@ -71,3 +71,48 @@ func ProcessImagesLikeGif(dir, pattern, threads string) {
 	}
 	voiceAlert.Customize("complete", voiceAlert.Samantha)
 }
+
+func ProcessImages6(dir, pattern, threads string) {
+	defer func() {
+		if err := recover(); err != nil {
+			voiceAlert.Customize("failed", voiceAlert.Samantha)
+		}
+	}()
+	files := GetFileInfo.GetAllFileInfo(dir, pattern)
+	if len(files) == 0 {
+		voiceAlert.Customize("skip", voiceAlert.Samantha)
+		return
+	}
+	for index, file := range files {
+		log.Debug.Printf("正在处理第 %d/%d 个文件\n", index+1, len(files))
+		log.Debug.Printf("文件%s压缩前大小%fMB\n", file.FullName, float64(file.Size)/MegaByte)
+		out, _ := os.Stat(util.Static6(file, threads))
+		resize := out.Size()
+		log.Debug.Printf("文件%s压缩后大小%fMB\n", file.FullName, float64(resize)/MegaByte)
+		voiceAlert.Customize("done", voiceAlert.Samantha)
+	}
+	voiceAlert.Customize("complete", voiceAlert.Samantha)
+}
+
+func ProcessAllImages6(root, pattern, threads string) {
+	ProcessImages6(root, pattern, threads)
+	Folders := GetAllFolder.ListFolders(root)
+	for index, Folder := range Folders {
+		log.Debug.Printf("正在处理第 %d/%d 个文件夹\n", index+1, len(Folders))
+		ProcessImages6(Folder, pattern, threads)
+	}
+}
+
+func ProcessImagesLikeGif6(dir, pattern, threads string) {
+	defer func() {
+		if err := recover(); err != nil {
+			voiceAlert.Customize("failed", voiceAlert.Samantha)
+		}
+	}()
+	files := GetFileInfo.GetAllFileInfo(dir, pattern)
+	for _, file := range files {
+		util.Dynamic6(file, threads)
+		voiceAlert.Customize("done", voiceAlert.Samantha)
+	}
+	voiceAlert.Customize("complete", voiceAlert.Samantha)
+}
