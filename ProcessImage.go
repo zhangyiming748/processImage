@@ -7,6 +7,7 @@ import (
 	"github.com/zhangyiming748/processImage/util"
 	"github.com/zhangyiming748/voiceAlert"
 	"os"
+	"runtime"
 )
 
 const (
@@ -40,10 +41,7 @@ func ProcessImages(dir, pattern, threads string) {
 	}
 	for index, file := range files {
 		log.Debug.Printf("正在处理第 %d/%d 个文件\n", index+1, len(files))
-		log.Debug.Printf("文件%s压缩前大小%fMB\n", file.FullName, float64(file.Size)/MegaByte)
-		out, _ := os.Stat(util.Static(file, threads))
-		resize := out.Size()
-		log.Debug.Printf("文件%s压缩后大小%fMB\n", file.FullName, float64(resize)/MegaByte)
+		util.Static(file, threads)
 		voiceAlert.Customize("done", voiceAlert.Samantha)
 	}
 	voiceAlert.Customize("complete", voiceAlert.Samantha)
@@ -51,10 +49,12 @@ func ProcessImages(dir, pattern, threads string) {
 
 func ProcessAllImages(root, pattern, threads string) {
 	ProcessImages(root, pattern, threads)
+	runtime.GC()
 	Folders := GetAllFolder.ListFolders(root)
 	for index, Folder := range Folders {
 		log.Debug.Printf("正在处理第 %d/%d 个文件夹\n", index+1, len(Folders))
 		ProcessImages(Folder, pattern, threads)
+		runtime.GC()
 	}
 }
 
