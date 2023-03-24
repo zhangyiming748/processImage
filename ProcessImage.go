@@ -40,10 +40,8 @@ func ProcessImages(dir, pattern, threads string) {
 	}
 	for index, file := range files {
 		log.Debug.Printf("正在处理第 %d/%d 个文件\n", index+1, len(files))
-		log.Debug.Printf("文件%s压缩前大小%fMB\n", file.FullName, float64(file.Size)/MegaByte)
-		out, _ := os.Stat(util.Static(file, threads))
-		resize := out.Size()
-		log.Debug.Printf("文件%s压缩后大小%fMB\n", file.FullName, float64(resize)/MegaByte)
+		//log.Debug.Printf("文件%s压缩前大小%fMB\n", file.FullName, float64(file.Size)/MegaByte)
+		util.Static(file, threads)
 		voiceAlert.Customize("done", voiceAlert.Samantha)
 	}
 	voiceAlert.Customize("complete", voiceAlert.Samantha)
