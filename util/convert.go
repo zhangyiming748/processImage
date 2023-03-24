@@ -6,7 +6,6 @@ import (
 	"github.com/zhangyiming748/replace"
 	"os"
 	"os/exec"
-	"runtime"
 	"strings"
 )
 
@@ -23,9 +22,6 @@ func Static(in GetFileInfo.Info, threads string) string {
 		}
 	}()
 	cmd := exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-c:v", "libaom-av1", "-still-picture", "1", "-threads", threads, out)
-	if runtime.GOOS == "windows" {
-		cmd = exec.Command("powershell.exe", "ffmpeg", "-threads", threads, "-i", in.FullPath, "-c:v", "libaom-av1", "-still-picture", "1", "-threads", threads, out)
-	}
 	log.Debug.Printf("生成的命令是:%s\n", cmd)
 	stdout, err := cmd.StdoutPipe()
 	cmd.Stderr = cmd.Stdout
