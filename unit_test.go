@@ -11,8 +11,8 @@ func TestProcessImages(t *testing.T) {
 	ProcessAllImages(dir, pattern, threads)
 }
 func TestProcessImages6(t *testing.T) {
-	dir := "/Volumes/Gloway720/recovery/照片"
+	dir := "F:\\整理\\LOL"
 	pattern := "jpg;JPG;png;PNG"
 	threads := "10"
-	ProcessAllImages6(dir, pattern, threads)
+	ProcessAllImages(dir, pattern, threads)
 }
