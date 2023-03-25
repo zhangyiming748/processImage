@@ -1,31 +1,59 @@
 package processImage
 
 import (
+	"fmt"
 	"github.com/zhangyiming748/GetAllFolder"
 	"github.com/zhangyiming748/GetFileInfo"
-	"github.com/zhangyiming748/log"
 	"github.com/zhangyiming748/processImage/util"
 	"github.com/zhangyiming748/voiceAlert"
+	"golang.org/x/exp/slog"
+	"io"
 	"os"
 )
 
-const (
-	Byte        = iota + 1
-	KiloByte    = 1000 * Byte
-	MegaByte    = 1000 * KiloByte
-	Gigabyte    = 1000 * MegaByte
-	Terabyte    = 1000 * Gigabyte
-	Petabyte    = 1000 * Terabyte
-	Exabyte     = 1000 * Petabyte
-	Zettabyte   = 1000 * Exabyte
-	Yottabyte   = 1000 * Zettabyte
-	Brontobytes = 1000 * Yottabyte
-	Geopbyte    = 1000 * Brontobytes
-)
+func init() {
+	logLevel := os.Getenv("LEVEL")
+	//var level slog.Level
+	var opt slog.HandlerOptions
+	switch logLevel {
+	case "Debug":
+		opt = slog.HandlerOptions{ // 自定义option
+			AddSource: true,
+			Level:     slog.LevelDebug, // slog 默认日志级别是 info
+		}
+	case "Info":
+		opt = slog.HandlerOptions{ // 自定义option
+			AddSource: true,
+			Level:     slog.LevelInfo, // slog 默认日志级别是 info
+		}
+	case "Warn":
+		opt = slog.HandlerOptions{ // 自定义option
+			AddSource: true,
+			Level:     slog.LevelWarn, // slog 默认日志级别是 info
+		}
+	case "Err":
+		opt = slog.HandlerOptions{ // 自定义option
+			AddSource: true,
+			Level:     slog.LevelError, // slog 默认日志级别是 info
+		}
+	default:
+		slog.Warn("需要正确设置环境变量 Debug,Info,Warn or Err")
+		slog.Info("默认使用Debug等级")
+		opt = slog.HandlerOptions{ // 自定义option
+			AddSource: true,
+			Level:     slog.LevelDebug, // slog 默认日志级别是 info
+		}
 
-const (
-	Limit = 2 * MegaByte
-)
+	}
+	file := "processImage.log"
+	logf, err := os.OpenFile(file, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0777)
+	if err != nil {
+		panic(err)
+	}
+	//defer logf.Close() //如果不关闭可能造成内存泄露
+	logger := slog.New(opt.NewJSONHandler(io.MultiWriter(logf, os.Stdout)))
+	slog.SetDefault(logger)
+}
 
 func ProcessImages(dir, pattern, threads string) {
 	defer func() {
@@ -39,7 +67,8 @@ func ProcessImages(dir, pattern, threads string) {
 		return
 	}
 	for index, file := range files {
-		log.Debug.Printf("正在处理第 %d/%d 个文件\n", index+1, len(files))
+
+		slog.Info(fmt.Sprintf("正在处理第 %d/%d 个文件", index+1, len(files)))
 		//log.Debug.Printf("文件%s压缩前大小%fMB\n", file.FullName, float64(file.Size)/MegaByte)
 		util.Static(file, threads)
 		voiceAlert.Customize("done", voiceAlert.Samantha)
@@ -51,7 +80,7 @@ func ProcessAllImages(root, pattern, threads string) {
 	ProcessImages(root, pattern, threads)
 	Folders := GetAllFolder.ListFolders(root)
 	for index, Folder := range Folders {
-		log.Debug.Printf("正在处理第 %d/%d 个文件夹\n", index+1, len(Folders))
+		slog.Info(fmt.Sprintf("正在处理第 %d/%d 个文件夹", index+1, len(Folders)))
 		ProcessImages(Folder, pattern, threads)
 	}
 }
@@ -65,51 +94,6 @@ func ProcessImagesLikeGif(dir, pattern, threads string) {
 	files := GetFileInfo.GetAllFileInfo(dir, pattern)
 	for _, file := range files {
 		util.Dynamic(file, threads)
-		voiceAlert.Customize("done", voiceAlert.Samantha)
-	}
-	voiceAlert.Customize("complete", voiceAlert.Samantha)
-}
-
-func ProcessImages6(dir, pattern, threads string) {
-	defer func() {
-		if err := recover(); err != nil {
-			voiceAlert.Customize("failed", voiceAlert.Samantha)
-		}
-	}()
-	files := GetFileInfo.GetAllFileInfo(dir, pattern)
-	if len(files) == 0 {
-		voiceAlert.Customize("skip", voiceAlert.Samantha)
-		return
-	}
-	for index, file := range files {
-		log.Debug.Printf("正在处理第 %d/%d 个文件\n", index+1, len(files))
-		log.Debug.Printf("文件%s压缩前大小%fMB\n", file.FullName, float64(file.Size)/MegaByte)
-		out, _ := os.Stat(util.Static6(file, threads))
-		resize := out.Size()
-		log.Debug.Printf("文件%s压缩后大小%fMB\n", file.FullName, float64(resize)/MegaByte)
-		voiceAlert.Customize("done", voiceAlert.Samantha)
-	}
-	voiceAlert.Customize("complete", voiceAlert.Samantha)
-}
-
-func ProcessAllImages6(root, pattern, threads string) {
-	ProcessImages6(root, pattern, threads)
-	Folders := GetAllFolder.ListFolders(root)
-	for index, Folder := range Folders {
-		log.Debug.Printf("正在处理第 %d/%d 个文件夹\n", index+1, len(Folders))
-		ProcessImages6(Folder, pattern, threads)
-	}
-}
-
-func ProcessImagesLikeGif6(dir, pattern, threads string) {
-	defer func() {
-		if err := recover(); err != nil {
-			voiceAlert.Customize("failed", voiceAlert.Samantha)
-		}
-	}()
-	files := GetFileInfo.GetAllFileInfo(dir, pattern)
-	for _, file := range files {
-		util.Dynamic6(file, threads)
 		voiceAlert.Customize("done", voiceAlert.Samantha)
 	}
 	voiceAlert.Customize("complete", voiceAlert.Samantha)
