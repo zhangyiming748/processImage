@@ -38,7 +38,7 @@ func Static(in GetFileInfo.Info, threads string) {
 		_, err := stdout.Read(tmp)
 		t := string(tmp)
 		t = replace.Replace(t)
-		slog.Debug(t)
+		fmt.Println(t)
 		if err != nil {
 			break
 		}
@@ -83,7 +83,7 @@ func Dynamic(in GetFileInfo.Info, threads string) {
 		_, err := stdout.Read(tmp)
 		t := string(tmp)
 		t = replace.Replace(t)
-		slog.Debug(t)
+		fmt.Println(t)
 		if err != nil {
 			break
 		}
