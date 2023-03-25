@@ -5,8 +5,8 @@ import (
 )
 
 func TestProcessImages(t *testing.T) {
-	dir := "/Users/zen/Pictures/emoji"
-	pattern := "jpg;JPG;png;PNG"
+	dir := "/Users/zen/Downloads/NecDaz"
+	pattern := "jpg;JPG;png;PNG;jpeg"
 	threads := "10"
 	ProcessAllImages(dir, pattern, threads)
 }

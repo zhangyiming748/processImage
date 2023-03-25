@@ -14,15 +14,15 @@ import (
  */
 func Static(in GetFileInfo.Info, threads string) {
 	prefix := strings.Trim(in.FullPath, in.ExtName)
-	out := strings.Join([]string{prefix, "avif"}, ".")
+	out := strings.Join([]string{prefix, "avif"}, "")
 	// Todo 如果转换出现错误 记录最后一个出问题的文件
 	defer func() {
 		if err := recover(); err != nil {
-			slog.Warn("最后出问题的文件", slog.Any("源文件", in.FullPath, ), slog.Any("目标文件", out), slog.Any("删除命令", fmt.Sprintf("rm \"%v\"", out)))
+			slog.Warn("最后出问题的文件", slog.Any("源文件", in.FullPath), slog.Any("目标文件", out), slog.Any("删除命令", fmt.Sprintf("rm \"%v\"", out)))
 		}
 	}()
 	cmd := exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-c:v", "libaom-av1", "-still-picture", "1", "-threads", threads, out)
-	slog.Info("ffmpeg", slog.Any("生成的命令", cmd))
+	slog.Info("ffmpeg", slog.Any("生成的命令", fmt.Sprint(cmd)))
 	stdout, err := cmd.StdoutPipe()
 	cmd.Stderr = cmd.Stdout
 	if err != nil {
@@ -59,12 +59,12 @@ func Static(in GetFileInfo.Info, threads string) {
 */
 func Dynamic(in GetFileInfo.Info, threads string) {
 	prefix := strings.Trim(in.FullPath, in.ExtName)
-	out := strings.Join([]string{prefix, "avif"}, ".")
+	out := strings.Join([]string{prefix, "avif"}, "")
 	cmd := exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-threads", threads, out)
 	// Todo 如果转换出现错误 记录最后一个出问题的文件
 	defer func() {
 		if err := recover(); err != nil {
-			slog.Warn("最后出问题的文件", slog.Any("源文件", in.FullPath, ), slog.Any("目标文件", out), slog.Any("删除命令", fmt.Sprintf("rm \"%v\"", out)))
+			slog.Warn("最后出问题的文件", slog.Any("源文件", in.FullPath), slog.Any("目标文件", out), slog.Any("删除命令", fmt.Sprintf("rm \"%v\"", out)))
 		}
 	}()
 	slog.Info("ffmpeg", slog.Any("生成的命令", cmd))
