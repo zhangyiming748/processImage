@@ -1,4 +1,4 @@
-package util
+package processImage
 
 import (
 	"fmt"
@@ -18,19 +18,19 @@ func Static(in GetFileInfo.Info, threads string) {
 	// Todo 如果转换出现错误 记录最后一个出问题的文件
 	defer func() {
 		if err := recover(); err != nil {
-			slog.Warn("最后出问题的文件", slog.Any("源文件", in.FullPath), slog.Any("目标文件", out), slog.Any("删除命令", fmt.Sprintf("rm \"%v\"", out)))
+			mylog.Warn("最后出问题的文件", slog.Any("源文件", in.FullPath), slog.Any("目标文件", out), slog.Any("删除命令", fmt.Sprintf("rm \"%v\"", out)))
 		}
 	}()
 	cmd := exec.Command("ffmpeg", "-threads", threads, "-i", in.FullPath, "-c:v", "libaom-av1", "-still-picture", "1", "-threads", threads, out)
-	slog.Info("ffmpeg", slog.Any("生成的命令", fmt.Sprint(cmd)))
+	mylog.Info("ffmpeg", slog.Any("生成的命令", fmt.Sprint(cmd)))
 	stdout, err := cmd.StdoutPipe()
 	cmd.Stderr = cmd.Stdout
 	if err != nil {
-		slog.Warn("cmd.StdoutPipe", slog.Any("错误", err))
+		mylog.Warn("cmd.StdoutPipe", slog.Any("错误", err))
 		return
 	}
 	if err = cmd.Start(); err != nil {
-		slog.Warn("cmd.Run", slog.Any("错误", err))
+		mylog.Warn("cmd.Run", slog.Any("错误", err))
 		return
 	}
 	for {
@@ -44,13 +44,13 @@ func Static(in GetFileInfo.Info, threads string) {
 		}
 	}
 	if err = cmd.Wait(); err != nil {
-		slog.Warn("cmd.Wait", slog.Any("错误", err))
+		mylog.Warn("cmd.Wait", slog.Any("错误", err))
 		return
 	}
 	if err := os.RemoveAll(in.FullPath); err != nil {
-		slog.Warn("删除失败", slog.Any("源文件", in.FullPath), slog.Any("错误", err))
+		mylog.Warn("删除失败", slog.Any("源文件", in.FullPath), slog.Any("错误", err))
 	} else {
-		slog.Info("删除成功", slog.Any("源文件", in.FullPath))
+		mylog.Info("删除成功", slog.Any("源文件", in.FullPath))
 	}
 }
 
@@ -64,10 +64,10 @@ func Dynamic(in GetFileInfo.Info, threads string) {
 	// Todo 如果转换出现错误 记录最后一个出问题的文件
 	defer func() {
 		if err := recover(); err != nil {
-			slog.Warn("最后出问题的文件", slog.Any("源文件", in.FullPath), slog.Any("目标文件", out), slog.Any("删除命令", fmt.Sprintf("rm \"%v\"", out)))
+			mylog.Warn("最后出问题的文件", slog.Any("源文件", in.FullPath), slog.Any("目标文件", out), slog.Any("删除命令", fmt.Sprintf("rm \"%v\"", out)))
 		}
 	}()
-	slog.Info("ffmpeg", slog.Any("生成的命令", cmd))
+	mylog.Info("ffmpeg", slog.String("生成的命令", fmt.Sprint(cmd)))
 	stdout, err := cmd.StdoutPipe()
 	cmd.Stderr = cmd.Stdout
 	if err != nil {
@@ -89,12 +89,12 @@ func Dynamic(in GetFileInfo.Info, threads string) {
 		}
 	}
 	if err = cmd.Wait(); err != nil {
-		slog.Warn("cmd.Wait", slog.Any("错误", err))
+		mylog.Warn("cmd.Wait", slog.Any("错误", err))
 		return
 	}
 	if err := os.RemoveAll(in.FullPath); err != nil {
-		slog.Warn("删除失败", slog.Any("源文件", in.FullPath), slog.Any("错误", err))
+		mylog.Warn("删除失败", slog.Any("源文件", in.FullPath), slog.Any("错误", err))
 	} else {
-		slog.Info("删除成功", slog.Any("源文件", in.FullPath))
+		mylog.Info("删除成功", slog.Any("源文件", in.FullPath))
 	}
 }

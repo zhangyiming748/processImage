@@ -1,17 +1,16 @@
 package processImage
 
 import (
-	"golang.org/x/exp/slog"
 	"testing"
 )
 
 func TestProcessImages(t *testing.T) {
 	//setLog()
-	dir := "/Users/zen/Downloads"
-	pattern := "jpg;JPG;png;PNG;jpeg"
+	dir := "C:\\Users\\zen\\Pictures"
+	pattern := "jpg;JPG;png;PNG;jpeg;bmp"
 	threads := "4"
 	ProcessAllImages(dir, pattern, threads)
-	slog.Debug("done!")
+	mylog.Debug("done!")
 }
 
 //func setLog() {
