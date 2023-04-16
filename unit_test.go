@@ -5,10 +5,10 @@ import (
 )
 
 func TestProcessImages(t *testing.T) {
-	//setLog()
-	dir := "C:\\Users\\zen\\Pictures"
+	setLog("Debug")
+	dir := "/Users/zen/Downloads/Tele"
 	pattern := "jpg;JPG;png;PNG;jpeg;bmp"
-	threads := "4"
+	threads := "10"
 	ProcessAllImages(dir, pattern, threads)
 	mylog.Debug("done!")
 }

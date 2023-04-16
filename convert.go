@@ -3,7 +3,6 @@ package processImage
 import (
 	"fmt"
 	"github.com/zhangyiming748/GetFileInfo"
-	"github.com/zhangyiming748/replace"
 	"golang.org/x/exp/slog"
 	"os"
 	"os/exec"
@@ -37,7 +36,6 @@ func Static(in GetFileInfo.Info, threads string) {
 		tmp := make([]byte, 1024)
 		_, err := stdout.Read(tmp)
 		t := string(tmp)
-		t = replace.Replace(t)
 		fmt.Println(t)
 		if err != nil {
 			break
@@ -82,7 +80,6 @@ func Dynamic(in GetFileInfo.Info, threads string) {
 		tmp := make([]byte, 1024)
 		_, err := stdout.Read(tmp)
 		t := string(tmp)
-		t = replace.Replace(t)
 		fmt.Println(t)
 		if err != nil {
 			break

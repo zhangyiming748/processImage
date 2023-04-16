@@ -12,7 +12,7 @@ import (
 
 var mylog *slog.Logger
 
-func SetLog(level string) {
+func setLog(level string) {
 	var opt slog.HandlerOptions
 	switch level {
 	case "Debug":
@@ -42,7 +42,6 @@ func SetLog(level string) {
 			AddSource: true,
 			Level:     slog.LevelDebug, // slog 默认日志级别是 info
 		}
-
 	}
 	file := "processImage.log"
 	logf, err := os.OpenFile(file, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0777)
@@ -54,7 +53,7 @@ func SetLog(level string) {
 }
 func init() {
 	l := os.Getenv("LEVEL")
-	SetLog(l)
+	setLog(l)
 }
 func ProcessImages(dir, pattern, threads string) {
 	defer func() {
@@ -77,7 +76,7 @@ func ProcessImages(dir, pattern, threads string) {
 
 func ProcessAllImages(root, pattern, threads string) {
 	ProcessImages(root, pattern, threads)
-	Folders := GetAllFolder.ListFolders(root)
+	Folders := GetAllFolder.List(root)
 	for index, Folder := range Folders {
 		mylog.Info(fmt.Sprintf("正在处理第 %d/%d 个文件夹", index+1, len(Folders)))
 		ProcessImages(Folder, pattern, threads)

@@ -3,8 +3,8 @@ module github.com/zhangyiming748/processImage
 go 1.19
 
 require (
-	github.com/zhangyiming748/GetAllFolder v0.0.12
-	github.com/zhangyiming748/GetFileInfo v0.0.24
+	github.com/zhangyiming748/GetAllFolder v0.0.14
+	github.com/zhangyiming748/GetFileInfo v0.0.31
 	github.com/zhangyiming748/replace v0.0.7
 	github.com/zhangyiming748/voiceAlert v0.0.17
 )
