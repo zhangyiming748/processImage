@@ -35,8 +35,9 @@ func Static(in GetFileInfo.Info, threads string) {
 	}
 	for {
 		tmp := make([]byte, 1024)
-		_, err := stdout.Read(tmp)
+		_, err = stdout.Read(tmp)
 		t := string(tmp)
+		t = strings.Replace(t, "\u0000", "", -1)
 		fmt.Println(t)
 		if err != nil {
 			break
