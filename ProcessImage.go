@@ -48,7 +48,6 @@ func setLog(level string) {
 	if err != nil {
 		panic(err)
 	}
-	//defer logf.Close() //如果不关闭可能造成内存泄露
 	mylog = slog.New(opt.NewJSONHandler(io.MultiWriter(logf, os.Stdout)))
 }
 func init() {
@@ -95,4 +94,22 @@ func ProcessImagesLikeGif(dir, pattern, threads string) {
 		voiceAlert.Customize("done", voiceAlert.Samantha)
 	}
 	voiceAlert.Customize("complete", voiceAlert.Samantha)
+}
+func ProcessAllImagesLikeGif(root, pattern, threads string) {
+	defer func() {
+		if err := recover(); err != nil {
+			voiceAlert.Customize("failed", voiceAlert.Samantha)
+		}
+	}()
+	folders := GetAllFolder.List(root)
+	folders = append(folders, root)
+	for _, folder := range folders {
+		files := GetFileInfo.GetAllFileInfo(folder, pattern)
+		for _, file := range files {
+			Dynamic(file, threads)
+			voiceAlert.Customize("done", voiceAlert.Samantha)
+		}
+		voiceAlert.Customize("complete", voiceAlert.Samantha)
+	}
+	voiceAlert.Customize("All complete", voiceAlert.Samantha)
 }

@@ -10,7 +10,8 @@ import (
 )
 
 /*
- */
+转换静态图片
+*/
 func Static(in GetFileInfo.Info, threads string) {
 	prefix := strings.Trim(in.FullPath, in.ExtName)
 	out := strings.Join([]string{prefix, "avif"}, "")
@@ -45,7 +46,7 @@ func Static(in GetFileInfo.Info, threads string) {
 		mylog.Warn("cmd.Wait", slog.Any("错误", err))
 		return
 	}
-	if err := os.RemoveAll(in.FullPath); err != nil {
+	if err = os.RemoveAll(in.FullPath); err != nil {
 		mylog.Warn("删除失败", slog.Any("源文件", in.FullPath), slog.Any("错误", err))
 	} else {
 		mylog.Info("删除成功", slog.Any("源文件", in.FullPath))
@@ -78,8 +79,9 @@ func Dynamic(in GetFileInfo.Info, threads string) {
 	}
 	for {
 		tmp := make([]byte, 1024)
-		_, err := stdout.Read(tmp)
+		_, err = stdout.Read(tmp)
 		t := string(tmp)
+		t = strings.Replace(t, "\u0000", "", -1)
 		fmt.Println(t)
 		if err != nil {
 			break
@@ -89,7 +91,7 @@ func Dynamic(in GetFileInfo.Info, threads string) {
 		mylog.Warn("cmd.Wait", slog.Any("错误", err))
 		return
 	}
-	if err := os.RemoveAll(in.FullPath); err != nil {
+	if err = os.RemoveAll(in.FullPath); err != nil {
 		mylog.Warn("删除失败", slog.Any("源文件", in.FullPath), slog.Any("错误", err))
 	} else {
 		mylog.Info("删除成功", slog.Any("源文件", in.FullPath))

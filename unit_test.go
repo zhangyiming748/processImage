@@ -13,6 +13,13 @@ func TestProcessImages(t *testing.T) {
 	mylog.Debug("done!")
 }
 
+func TestProcessAllImagesLikeGif(t *testing.T) {
+	pattern := "gif"
+	root := "/Volumes/T7/slacking/Telegram"
+	threads := "8"
+	ProcessAllImagesLikeGif(root, pattern, threads)
+}
+
 //func setLog() {
 //	//var level slog.Level
 //	var opt slog.HandlerOptions
