@@ -14,10 +14,16 @@ func TestProcessImages(t *testing.T) {
 }
 
 func TestProcessAllImagesLikeGif(t *testing.T) {
-	pattern := "gif"
-	root := "/Volumes/T7/slacking/Telegram"
+	pattern := "gif;webm"
+	root := "/Users/zen/Downloads/Fugtrup collection"
 	threads := "8"
 	ProcessAllImagesLikeGif(root, pattern, threads)
+}
+func TestProcessToGIF(t *testing.T) {
+	pattern := "webm"
+	root := "/Users/zen/Downloads/Fugtrup collection/archive/webp"
+	threads := "8"
+	processAllToGIF(root, pattern, threads)
 }
 
 //func setLog() {

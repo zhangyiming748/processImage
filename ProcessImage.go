@@ -113,3 +113,21 @@ func ProcessAllImagesLikeGif(root, pattern, threads string) {
 	}
 	voiceAlert.Customize("All complete", voiceAlert.Samantha)
 }
+func processAllToGIF(root, pattern, threads string) {
+	defer func() {
+		if err := recover(); err != nil {
+			voiceAlert.Customize("failed", voiceAlert.Samantha)
+		}
+	}()
+	folders := GetAllFolder.List(root)
+	folders = append(folders, root)
+	for _, folder := range folders {
+		files := GetFileInfo.GetAllFileInfo(folder, pattern)
+		for _, file := range files {
+			ToGIF(file, threads)
+			voiceAlert.Customize("done", voiceAlert.Samantha)
+		}
+		voiceAlert.Customize("complete", voiceAlert.Samantha)
+	}
+	voiceAlert.Customize("All complete", voiceAlert.Samantha)
+}
